@@ -65,36 +65,33 @@ front_h = _mm256_mullo_epi16(front_h, alpha_h);
 
 и его ассемблерное представление:
 ```
- mov     eax, 255
-vmovdqa ymm2, YMMWORD PTR [rdi+rcx]
-vmovdqa ymm0, YMMWORD PTR [rsi+rcx]
 vpmovzxbw       ymm4, xmm2
 vpmovzxbw       ymm6, xmm0
+
 vextracti64x2   xmm2, ymm2, 0x1
 vextracti64x2   xmm0, ymm0, 0x1
-vpshufb ymm7, ymm4, ymm5
+
 vpmovzxbw       ymm2, xmm2
 vpmovzxbw       ymm3, xmm0
 vpbroadcastw    ymm0, eax
+
 vpshufb ymm5, ymm2, ymm5
 vpmullw ymm4, ymm4, ymm7
-vpmullw ymm2, ymm2, ymm5
-vpsubw  ymm1, ymm0, ymm7
+
 vpmullw ymm1, ymm1, ymm6
-vpsubw  ymm0, ymm0, ymm5
-vpmullw ymm0, ymm0, ymm3
-vpaddw  ymm1, ymm1, ymm4
-vpaddw  ymm0, ymm0, ymm2
-vpshufb ymm1, ymm1, ymm4
-vpshufb ymm0, ymm0, ymm4
-vextracti64x2   xmm2, ymm1, 0x1
-vextracti64x2   xmm3, ymm0, 0x1
-vpaddb  xmm1, xmm2, xmm1
-vpaddb  xmm0, xmm3, xmm0
-vinserti128     ymm0, ymm1, xmm0, 0x1
-vmovdqa YMMWORD PTR [rdx+rcx], ymm0
-vzeroupper
-ret
 ```
 
 Из этого фрагмента видно, что, в отличие от наивной реализации, при использовании AVX2 инструкций используются xmm регистры, позволяющие обрабатывать восемь пиксилей за итерацию.
+
+## Результаты измерений
+
+Измерения производились на ноутбуке, подключенном к сети, при температуре 276К и флаге оптимизации -O2
+
+Версия  | FPS
+--------|----
+Наивная | 320
+С AVX2  | 820
+
+## Выводы
+
+Использование SIMD (в частности AVX2) технологий позволяет ускорить блендинг изображения в 4 раза
