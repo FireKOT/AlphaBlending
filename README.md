@@ -94,7 +94,7 @@ vpmullw ymm1, ymm1, ymm6
 
 $$\frac{FPS_{optimized}}{FPS_{simple}}$$
 
-Ускорение: 4.00 \pm 0.08
+Ускорение: $4.00 \pm 0.08$
 
 ## Выводы
 
