@@ -42,7 +42,7 @@ mov     BYTE PTR [r10+1+rax], bl
 ```
 
 Фрагмент оптимизированного варианта:
-``` asm
+``` c
 unsigned char set_zero = 255;
 __m256i max_alpha = _mm256_set1_epi16(255);
 
@@ -62,7 +62,7 @@ front_h = _mm256_mullo_epi16(front_h, alpha_h);
 ```
 
 и его ассемблерное представление:
-``` c
+``` asm
 vpmovzxbw       ymm4, xmm2
 vpmovzxbw       ymm6, xmm0
 
