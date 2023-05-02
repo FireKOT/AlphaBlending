@@ -28,12 +28,12 @@ data->blend_algn_pxls[offset + 2] = (unsigned char) ((data->front_algn_pxls[offs
 ```
 
 и часть его ассемблерного представления:
-``` c
+``` asm
 mov     rsi, QWORD PTR [rdx+16]
 mov     r10, QWORD PTR [rdx+32]
-movzx   ebx, BYTE PTR [rsi+1+rax]
+movzx   ebx, BYTE  PTR [rsi+1+rax]
 mov     rsi, QWORD PTR [rdx+24]
-movzx   esi, BYTE PTR [rsi+1+rax]
+movzx   esi, BYTE  PTR [rsi+1+rax]
 imul    ebx, r9d
 imul    esi, ecx
 add     ebx, esi
@@ -62,7 +62,7 @@ front_h = _mm256_mullo_epi16(front_h, alpha_h);
 ```
 
 и его ассемблерное представление:
-``` asm
+``` c
 vpmovzxbw       ymm4, xmm2
 vpmovzxbw       ymm6, xmm0
 
